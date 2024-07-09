@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Alumnos y Cursos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Registro de Alumnos y Cursos</h1>
+    
+    <!-- Formulario para crear curso -->
+    <form action="{{ url_for('index') }}" method="post">
+        <label for="nombre_curso">Nombre del Curso:</label>
+        <input type="text" id="nombre_curso" name="nombre_curso" required>
+        <button type="submit" name="crear_curso">Crear Curso</button>
+    </form>
+
+    <hr>
+
+    <!-- Formulario para registrar alumno -->
+    <form action="{{ url_for('index') }}" method="post">
+        <label for="codigo">Código (Número de Lista):</label>
+        <input type="text" id="codigo" name="codigo" required>
+        <br>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <br>
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" required>
+        <br>
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" required>
+        <br>
+        <label for="curso">Curso:</label>
+        <select id="curso" name="curso">
+            {% for curso in cursos %}
+                <option value="{{ curso['id_curso'] }}">{{ curso['nombre_curso'] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit" name="registrar_alumno">Agregar Alumno</button>
+    </form>
+
+    <!-- Enlace para ver registros en otra página -->
+    <a href="{{ url_for('ver_registros') }}">Ver Registros</a>
+
+    <!-- Enlace para ver códigos QR en otra página -->
+    <a href="{{ url_for('ver_codigos_qr') }}">Ver Códigos QR</a>
+
+</body>
+</html>

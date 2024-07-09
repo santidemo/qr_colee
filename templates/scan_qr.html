@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Escanear Código QR</title>
+    <style>
+        /* Estilos CSS para el contenedor de la cámara */
+        #qr-reader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        /* Estilos CSS para el área del visor de la cámara */
+        #qr-reader {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Escanear Código QR</h1>
+
+    <div id="qr-reader-container">
+        <video id="qr-reader" autoplay></video>
+        <button onclick="startScanner()">Activar Cámara</button>
+        <p id="qr-result">Aquí aparecerá el resultado del escaneo...</p>
+    </div>
+
+    <script src="https://unpkg.com/@zxing/library@latest"></script>
+    <script>
+        // Función para activar la cámara y comenzar a escanear
+        function startScanner() {
+            const qrReader = document.getElementById('qr-reader');
+            const qrResult = document.getElementById('qr-result');
+
+            // Verificar si el navegador soporta la API de getUserMedia
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Obtener permiso para usar la cámara
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                    .then(function(stream) {
+                        qrReader.srcObject = stream;
+                        qrResult.textContent = 'Escaneando...';
+
+                        // Crear un detector de QR usando la librería `ZXing`
+                        const codeReader = new ZXing.BrowserQRCodeReader();
+                        codeReader.decodeFromVideoDevice(undefined, 'qr-reader', (result, err) => {
+                            if (result) {
+                                qrResult.textContent = result.text;
+                                // Puedes hacer algo con `result.text`, por ejemplo, enviarlo al servidor
+                            }
+                            if (err && !(err instanceof ZXing.NotFoundException)) {
+                                console.error(err);
+                                qrResult.textContent = 'Error al escanear. Inténtalo nuevamente.';
+                            }
+                        });
+                    })
+                    .catch(function(err) {
+                        console.error('Error al acceder a la cámara:', err);
+                        qrResult.textContent = 'Error al acceder a la cámara. Verifica los permisos.';
+                    });
+            } else {
+                qrResult.textContent = 'Tu navegador no soporta la captura de video.';
+            }
+        }
+    </script>
+</body>
+</html>

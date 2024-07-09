@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registros de Alumnos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Registros de Alumnos por Curso</h1>
+    
+    {% for curso in cursos %}
+        <h2>{{ curso['nombre_curso'] }}</h2>
+        <ul>
+            {% for alumno in curso['alumnos'] %}
+                <li>
+                    {{ alumno['nombre'] }} {{ alumno['apellido'] }} - DNI: {{ alumno['dni'] }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+    <!-- Enlace para volver a la página principal -->
+    <a href="{{ url_for('index') }}">Volver al Inicio</a>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Curso</title>
+</head>
+<body>
+    <h1>Crear Nuevo Curso</h1>
+    
+    <!-- Formulario para crear curso -->
+    <form action="{{ url_for('crear_curso') }}" method="post">
+        <label for="nombre_curso">Nombre del Curso:</label>
+        <input type="text" id="nombre_curso" name="nombre_curso" required>
+        <button type="submit" name="crear_curso">Crear Curso</button>
+    </form>
+
+</body>
+</html>
