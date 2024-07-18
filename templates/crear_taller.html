@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Taller</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Crear Taller</h1>
+    
+    <!-- Formulario para crear un taller -->
+    <form action="{{ url_for('crear_taller') }}" method="post">
+        <label for="nombre">Nombre del Taller:</label>
+        <input type="text" id="nombre" name="nombre" required>
+        <br>
+        <label for="horario_e">Horario de Entrada:</label>
+        <input type="time" id="horario_e" name="horario_e" required>
+        <br>
+        <label for="horario_s">Horario de Salida:</label>
+        <input type="time" id="horario_s" name="horario_s" required>
+        <br>
+        <label for="curso">Curso:</label>
+        <select id="curso" name="curso" required>
+            {% for curso in cursos %}
+                <option value="{{ curso['id_curso'] }}">{{ curso['Anio'] }} - {{ curso['Turno'] }} - {{ curso['Ciclo'] }} - {{ curso['Division'] }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button type="submit">Crear Taller</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">Volver al Registro de Alumnos</a>
+</body>
+</html>

@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Crear Curso</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Crear Nuevo Curso</h1>
+    <h1>Crear Curso</h1>
     
-    <!-- Formulario para crear curso -->
+    <!-- Formulario para crear un curso -->
     <form action="{{ url_for('crear_curso') }}" method="post">
-        <label for="nombre_curso">Nombre del Curso:</label>
-        <input type="text" id="nombre_curso" name="nombre_curso" required>
-        <button type="submit" name="crear_curso">Crear Curso</button>
+        <label for="anio">Año:</label>
+        <input type="text" id="anio" name="anio" required>
+        <br>
+        <label for="turno">Turno:</label>
+        <select id="turno" name="turno" required>
+            <option value="Mañana">Mañana</option>
+            <option value="Tarde">Tarde</option>
+        </select>
+        <br>
+        <label for="division">División:</label>
+        <input type="text" id="division" name="division" required>
+        <br>
+        <label for="ciclo">Ciclo:</label>
+        <select id="ciclo" name="ciclo" required>
+            <option value="Basico">Básico</option>
+            <option value="Superior">Superior</option>
+        </select>
+        <br>
+        <button type="submit">Crear Curso</button>
     </form>
 
+    <a href="{{ url_for('index') }}">Volver al Registro de Alumnos</a>
 </body>
 </html>

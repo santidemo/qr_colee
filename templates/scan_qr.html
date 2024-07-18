@@ -31,12 +31,27 @@
         <p id="qr-result">Aquí aparecerá el resultado del escaneo...</p>
     </div>
 
+    <!-- Formulario para registrar asistencia -->
+    <form id="asistencia-form" action="{{ url_for('registrar_asistencia') }}" method="post">
+        <input type="hidden" id="qr_data" name="qr_data" required>
+        <label for="llegada">Llegada:</label>
+        <select id="llegada" name="llegada" required>
+            <option value="Tarde">Tarde</option>
+            <option value="Bien">Bien</option>
+            <option value="Falta">Falta</option>
+        </select>
+        <br>
+        <button type="submit">Registrar Asistencia</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">Volver al Registro de Alumnos</a>
+
     <script src="https://unpkg.com/@zxing/library@latest"></script>
     <script>
-        // Función para activar la cámara y comenzar a escanear
         function startScanner() {
             const qrReader = document.getElementById('qr-reader');
             const qrResult = document.getElementById('qr-result');
+            const qrDataInput = document.getElementById('qr_data');
 
             // Verificar si el navegador soporta la API de getUserMedia
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -51,7 +66,7 @@
                         codeReader.decodeFromVideoDevice(undefined, 'qr-reader', (result, err) => {
                             if (result) {
                                 qrResult.textContent = result.text;
-                                // Puedes hacer algo con `result.text`, por ejemplo, enviarlo al servidor
+                                qrDataInput.value = result.text;
                             }
                             if (err && !(err instanceof ZXing.NotFoundException)) {
                                 console.error(err);
