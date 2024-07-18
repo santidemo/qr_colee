@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector
 import qrcode
-import pandas as pd
 import os
 from datetime import datetime
 
@@ -98,7 +97,7 @@ def crear_curso():
                 cursor.close()
                 conexion.close()
     
-    return redirect(url_for('index'))
+    return render_template('crear_curso.html')
 
 # Función para calcular el estado de llegada
 def calcular_llegada(qr_data):
@@ -154,6 +153,34 @@ def obtener_cursos_desde_db():
             conexion.close()
     
     return cursos
+
+# Ruta para la página de creación de talleres
+@app.route('/crear_taller', methods=['GET', 'POST'])
+def crear_taller():
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        horario_e = request.form['horario_E']
+        horario_s = request.form['horario_S']
+        curso_id = request.form['curso']
+        
+        conexion = conectar_db()
+        if conexion:
+            cursor = conexion.cursor()
+            try:
+                insert_taller_query = "INSERT INTO Taller (nombre_T, horario_E, horario_S, Curso_id_curso) VALUES (%s, %s, %s, %s)"
+                cursor.execute(insert_taller_query, (nombre, horario_e, horario_s, curso_id))
+                conexion.commit()
+            except mysql.connector.Error as err:
+                print(f"Error al insertar taller en la base de datos: {err}")
+                conexion.rollback()
+            finally:
+                cursor.close()
+                conexion.close()
+    
+    # Obtener la lista de cursos desde la base de datos
+    cursos = obtener_cursos_desde_db()
+    
+    return render_template('crear_taller.html', cursos=cursos)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -13,22 +13,22 @@
         <label for="nombre">Nombre del Taller:</label>
         <input type="text" id="nombre" name="nombre" required>
         <br>
-        <label for="horario_e">Horario de Entrada:</label>
-        <input type="time" id="horario_e" name="horario_e" required>
+        <label for="horario_E">Horario de Entrada:</label>
+        <input type="time" id="horario_E" name="horario_E" required>
         <br>
-        <label for="horario_s">Horario de Salida:</label>
-        <input type="time" id="horario_s" name="horario_s" required>
+        <label for="horario_S">Horario de Salida:</label>
+        <input type="time" id="horario_S" name="horario_S" required>
         <br>
         <label for="curso">Curso:</label>
         <select id="curso" name="curso" required>
             {% for curso in cursos %}
-                <option value="{{ curso['id_curso'] }}">{{ curso['Anio'] }} - {{ curso['Turno'] }} - {{ curso['Ciclo'] }} - {{ curso['Division'] }}</option>
+                <option value="{{ curso['id_curso'] }}">{{ curso['Anio'] }}º{{ curso['Division'] }}º Ciclo:{{ curso['Ciclo'] }} Turno:{{ curso['Turno'] }}</option>
             {% endfor %}
         </select>
         <br>
         <button type="submit">Crear Taller</button>
     </form>
-
+    
     <a href="{{ url_for('index') }}">Volver al Registro de Alumnos</a>
 </body>
 </html>

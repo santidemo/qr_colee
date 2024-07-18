@@ -25,15 +25,14 @@
         <label for="curso">Curso:</label>
         <select id="curso" name="curso" required>
             {% for curso in cursos %}
-                <option value="{{ curso['id_curso'] }}">{{ curso['Anio'] }} - {{ curso['Turno'] }} - {{ curso['Ciclo'] }} - {{ curso['Division'] }}</option>
+                <option value="{{ curso['id_curso'] }}">{{ curso['Anio'] }}º{{ curso['Division'] }}º Ciclo:{{ curso['Ciclo'] }} Turno:{{ curso['Turno'] }}</option>
             {% endfor %}
         </select>
         <br>
         <button type="submit">Registrar Alumno</button>
     </form>
-
+    <a href="{{ url_for('crear_taller') }}">Crear un taller</a>
     <a href="{{ url_for('scan_qr') }}">Scanear QR</a>
-
     <a href="{{ url_for('crear_curso') }}">Crear un nuevo curso</a>
 </body>
 </html>
