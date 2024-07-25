@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <title>Escanear Código QR</title>
@@ -31,27 +32,35 @@
         <p id="qr-result">Aquí aparecerá el resultado del escaneo...</p>
     </div>
 
+    <div id="resultado-llegada">
+        {% if nombre_alumno and estado_llegada %}
+            <p>Nombre del alumno: {{ nombre_alumno }}</p>
+            <p>Estado de llegada: {{ estado_llegada }}</p>
+        {% elif nombre_alumno %}
+            <p>Nombre del alumno: {{ nombre_alumno }}</p>
+            <p>Estado de llegada: No se pudo determinar</p>
+        {% else %}
+            <p>Alumno no encontrado</p>
+        {% endif %}
+    </div>
+
     <script src="https://unpkg.com/@zxing/library@latest"></script>
     <script>
-        // Función para activar la cámara y comenzar a escanear
         function startScanner() {
             const qrReader = document.getElementById('qr-reader');
             const qrResult = document.getElementById('qr-result');
 
-            // Verificar si el navegador soporta la API de getUserMedia
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Obtener permiso para usar la cámara
                 navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
                     .then(function(stream) {
                         qrReader.srcObject = stream;
                         qrResult.textContent = 'Escaneando...';
 
-                        // Crear un detector de QR usando la librería `ZXing`
                         const codeReader = new ZXing.BrowserQRCodeReader();
                         codeReader.decodeFromVideoDevice(undefined, 'qr-reader', (result, err) => {
                             if (result) {
                                 qrResult.textContent = result.text;
-                                // Puedes hacer algo con `result.text`, por ejemplo, enviarlo al servidor
+                                actualizarEstadoLlegada(result.text);
                             }
                             if (err && !(err instanceof ZXing.NotFoundException)) {
                                 console.error(err);
@@ -66,6 +75,39 @@
             } else {
                 qrResult.textContent = 'Tu navegador no soporta la captura de video.';
             }
+        }
+
+        function actualizarEstadoLlegada(qr_data) {
+            const url = '/actualizar_estado_llegada';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ qr_data: qr_data }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultadoLlegada = document.getElementById('resultado-llegada');
+                if (data.nombre_alumno && data.estado_llegada) {
+                    resultadoLlegada.innerHTML = `
+                        <p>Nombre del alumno: ${data.nombre_alumno}</p>
+                        <p>Estado de llegada: ${data.estado_llegada}</p>
+                    `;
+                } else if (data.nombre_alumno) {
+                    resultadoLlegada.innerHTML = `
+                        <p>Nombre del alumno: ${data.nombre_alumno}</p>
+                        <p>Estado de llegada: No se pudo determinar</p>
+                    `;
+                } else {
+                    resultadoLlegada.innerHTML = `
+                        <p>Alumno no encontrado</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error al actualizar estado de llegada:', error);
+            });
         }
     </script>
 </body>

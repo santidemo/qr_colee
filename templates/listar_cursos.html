@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Cursos</title>
+</head>
+<body>
+    <h1>Lista de Cursos</h1>
+    <ul>
+        {% for curso in cursos %}
+            <li><a href="{{ url_for('listar_talleres', curso_id=curso.id_curso) }}">{{ curso.Anio }} - {{ curso.Turno }} - {{ curso.Ciclo }} - {{ curso.Division }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

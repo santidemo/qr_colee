@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Talleres</title>
+</head>
+<body>
+    <h1>Lista de Talleres</h1>
+    <ul>
+        {% for taller in talleres %}
+            <li>{{ taller.nombre_T }}: Entrada: {{ taller.horario_E }}, Salida: {{ taller.horario_S }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('listar_cursos') }}">Volver a la lista de cursos</a>
+</body>
+</html>

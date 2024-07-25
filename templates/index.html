@@ -8,31 +8,40 @@
 <body>
     <h1>Registro de Alumnos</h1>
     
-    <!-- Formulario para registrar alumno -->
-    <form action="{{ url_for('index') }}" method="post">
-        <label for="codigo">Código (Número de Lista):</label>
+    <!-- Formulario de registro de alumnos -->
+    <form method="POST">
+        <label for="codigo">Código:</label>
         <input type="text" id="codigo" name="codigo" required>
-        <br>
+        
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required>
-        <br>
+        
         <label for="apellido">Apellido:</label>
         <input type="text" id="apellido" name="apellido" required>
-        <br>
+        
         <label for="dni">DNI:</label>
         <input type="text" id="dni" name="dni" required>
-        <br>
+        
         <label for="curso">Curso:</label>
         <select id="curso" name="curso" required>
             {% for curso in cursos %}
-                <option value="{{ curso['id_curso'] }}">{{ curso['Anio'] }}º{{ curso['Division'] }}º Ciclo:{{ curso['Ciclo'] }} Turno:{{ curso['Turno'] }}</option>
+                <option value="{{ curso.id_curso }}">{{ curso.Anio }} - {{ curso.Turno }} - {{ curso.Ciclo }} - {{ curso.Division }}</option>
             {% endfor %}
         </select>
-        <br>
+        
         <button type="submit">Registrar Alumno</button>
     </form>
-    <a href="{{ url_for('crear_taller') }}">Crear un taller</a>
-    <a href="{{ url_for('scan_qr') }}">Scanear QR</a>
-    <a href="{{ url_for('crear_curso') }}">Crear un nuevo curso</a>
+    
+    <!-- Enlace a la lista de cursos -->
+    <h2><a href="{{ url_for('listar_cursos') }}">Ver Lista de Cursos</a></h2>
+    
+    <!-- Enlace a la creación de cursos -->
+    <h2><a href="{{ url_for('crear_curso') }}">Crear Nuevo Curso</a></h2>
+    
+    <!-- Enlace a la creación de talleres -->
+    <h2><a href="{{ url_for('crear_taller') }}">Crear Nuevo Taller</a></h2>
+    
+    <!-- Enlace a la página de escaneo de QR -->
+    <h2><a href="{{ url_for('scan_qr') }}">Escanear QR</a></h2>
 </body>
 </html>
